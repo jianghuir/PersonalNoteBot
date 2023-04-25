@@ -7,6 +7,9 @@
 #pip install chromadb
 #pip install pypdf
 
+#Add your openai api key and 
+#Run this line in terminal: "streamlit run app.py"
+
 import os
 import glob
 import nbformat
@@ -156,7 +159,7 @@ if folder_path:
     split_documents = text_splitter.split_documents(documents)
 
     # Define embedding
-    os.environ["OPENAI_API_KEY"] = "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"
+    os.environ["OPENAI_API_KEY"] = ""
     embeddings = OpenAIEmbeddings(openai_api_key=os.environ["OPENAI_API_KEY"])
 
     # Save and load embeddings
