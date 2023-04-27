@@ -52,7 +52,7 @@ def get_documents(folder_path):
             pages = None
             doc = None
 
-            if file_extension in {'.txt', '.pdf', '.odt', '.ods', '.docx', '.xlsx', '.ipynb', '.py', '.pptx', 'html'}:
+            if file_extension in {'.txt', '.pdf', '.odt', '.ods', '.docx', '.xlsx', '.ipynb', '.py', '.pptx', '.html'}:
 
                 # Read the file based on its extension
                 if file_extension == '.pdf':
@@ -161,13 +161,12 @@ if folder_path:
     split_documents = text_splitter.split_documents(documents)
 
     # Define embedding
-    os.environ["OPENAI_API_KEY"] = "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"
+    os.environ["OPENAI_API_KEY"] = "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"
     embeddings = OpenAIEmbeddings(openai_api_key=os.environ["OPENAI_API_KEY"])
 
     # Save and load embeddings
     persist_directory = 'db2'
     vectordb = Chroma.from_documents(documents=split_documents, embedding=embeddings, persist_directory=persist_directory)
-    vectordb.persist()
     vectordb = None
     vectordb = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
     st.success("Embeddings saved to and loaded from local directory 'db2' successfully.")
@@ -210,8 +209,8 @@ if folder_path:
     if query:
         instruction = "AI must use retrievalQA tool first. If cannot find answer in retrievalQA tool, AI's output must start with 'The question is not in the scope of the documents provided.', and then AI can answer the question based on chat history or parametric knowledge."
         full_query = instruction + " " + query
-        response = conversation_agent(full_query)
-        st.write("Query result:", response)
+        response = conversation_agent(full_query) 
+        st.write("Query result:", response["output"])
 
 
         # Similarity search to return related documents
