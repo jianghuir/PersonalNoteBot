@@ -161,7 +161,7 @@ if folder_path:
     split_documents = text_splitter.split_documents(documents)
 
     # Define embedding
-    os.environ["OPENAI_API_KEY"] = "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"
+    os.environ["OPENAI_API_KEY"] = "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"
     embeddings = OpenAIEmbeddings(openai_api_key=os.environ["OPENAI_API_KEY"])
 
     # Save and load embeddings
@@ -208,9 +208,11 @@ if folder_path:
 
 
     if query:
-        #response = qa.run(query)
-        response = conversation_agent(query)
+        instruction = "AI must use retrievalQA tool first. If cannot find answer in retrievalQA tool, AI's output must start with 'The question is not in the scope of the documents provided.', and then AI can answer the question based on chat history or parametric knowledge."
+        full_query = instruction + " " + query
+        response = conversation_agent(full_query)
         st.write("Query result:", response)
+
 
         # Similarity search to return related documents
         similar_docs = vectordb.similarity_search_with_score(query)
