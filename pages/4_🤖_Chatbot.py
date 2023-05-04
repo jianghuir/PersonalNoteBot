@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import pandas as pd
 
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma

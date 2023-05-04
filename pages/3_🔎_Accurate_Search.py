@@ -4,7 +4,6 @@ import pandas as pd
 
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain import OpenAI
 from langchain.chains import RetrievalQA
 from utilities import load_database_self, db_folder
@@ -114,5 +113,5 @@ if len(st.session_state["answer"])>0:
             st.markdown(f"-- **#{i+1}** --")
             st.markdown(f"**Document Location**: {st.session_state['similar_docs'][i][0].metadata}")
             st.markdown(f"**Distance Score**: {st.session_state['similar_docs'][i][1]:.3f}")
-            if st.checkbox("Display document content"):
+            if st.checkbox("Display document content", key=f"display_{i}"):
                 st.markdown(st.session_state['similar_docs'][i][0].page_content)

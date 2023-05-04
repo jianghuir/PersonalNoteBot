@@ -5,19 +5,11 @@ from nbconvert import PythonExporter
 import subprocess  
 import pandas as pd
 
-from langchain.document_loaders import PyPDFLoader
-from langchain.document_loaders import UnstructuredPowerPointLoader
-from langchain.document_loaders import UnstructuredWordDocumentLoader
-from langchain.document_loaders import UnstructuredHTMLLoader
-from langchain.document_loaders import TextLoader
-from langchain.docstore.document import Document
 from utilities import update_database_record, folder_recursion, db_folder
 
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain import OpenAI
-from langchain.chains import RetrievalQA
 from PIL import Image
 
 st.set_page_config(
