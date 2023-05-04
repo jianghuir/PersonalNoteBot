@@ -90,3 +90,12 @@ with st.form(key='my_form',clear_on_submit=True):
 
 st.write('text = ', st.session_state.text)
 
+st.subheader("Test text_input(on_change=)")
+if "input_text" not in st.session_state:
+    st.session_state["input_text"] = ""
+def generate_answer():
+    m = st.session_state.input_text
+    st.write(m, m) # st.write() inside on_change function doesn't really write
+    return
+st.text_input("enter something", key="input_text", on_change=generate_answer)
+st.write(st.session_state.input_text) # must pass values through session_state for other operation

@@ -100,6 +100,27 @@ def init_chatbot(selected_index):
 
     return chatbot
 
+def get_response(query):
+    """
+    This function generates response through chatbot
+    """
+    instruction = "AI must use retrievalQA tool first. If cannot find answer in retrievalQA tool, \
+AI's output must start with 'The question is not in the scope of the documents provided.', and then \
+AI can answer the question based on chat history or parametric knowledge. Question: "
+
+    if st.session_state["index"] == no_idx:
+        response = st.session_state["chatbot"](query)
+    else:
+        full_query = instruction + query
+        response = st.session_state["chatbot"](full_query)
+    # Store the user input and response
+    st.session_state.query_history.append(query)
+    if st.session_state["index"] == no_idx:
+        st.session_state.response_history.append(response["response"])
+    else:
+        st.session_state.response_history.append(response["output"])
+
+    return
 
 with st.container():
     image_column, right_column = st.columns((1,2))
@@ -133,11 +154,7 @@ else:
         if st.session_state["index"] == no_idx:
             st.success("The Chatbot 🤖 is ready to help you! (no index loaded)")
         else:
-            st.success(f"The Chatbot 🤖 loaded with **- {st.session_state['index']} -** is ready to help you!")
-
-        instruction = "AI must use retrievalQA tool first. If cannot find answer in retrievalQA tool, \
-AI's output must start with 'The question is not in the scope of the documents provided.', and then \
-AI can answer the question based on chat history or parametric knowledge. Question: "
+            st.success(f"The Chatbot 🤖 loaded with **- {st.session_state['index']} -** is ready to help you!")       
 
         # we need to use st.form to clear query after submission
         with st.form(key='my_form',clear_on_submit=True):
@@ -148,23 +165,13 @@ AI can answer the question based on chat history or parametric knowledge. Questi
         st.session_state.query_text = "" #clear query_text, so in next round query will start from none
 
         if query:
-            if st.session_state["index"] == no_idx:
-                response = st.session_state["chatbot"](query)
-            else:
-                full_query = instruction + query
-                response = st.session_state["chatbot"](full_query)
-            # Store the user input and response
-            st.session_state.query_history.append(query)
-            if st.session_state["index"] == no_idx:
-                st.session_state.response_history.append(response["response"])
-            else:
-                st.session_state.response_history.append(response["output"])
-
+            with st.spinner("🤖 generating answer..."):
+                get_response(query)
+                st.spinner("")
             
 
-# Display the chat history
+# Display the updated chat history
 for i in range(len(st.session_state.query_history)-1, -1, -1):
-    st.write(i)
     message(st.session_state.response_history[i], is_user=False, key=str(i)+"_AI",seed=727)
     message(st.session_state.query_history[i], is_user=True, key=str(i)+"_user")
             
