@@ -1,0 +1,10 @@
+*.pycache
+*.parquet
+*db*
+*note*
+
+practice*
+*/.DS_Store
+
+.*  
+!/.gitignore  
