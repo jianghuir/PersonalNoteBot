@@ -185,7 +185,7 @@ pyparsing==2.4.7
 pypdf==3.8.1
 PyPDF2==3.0.1
 PyQt5==5.15.2
-PyQt5_sip==4.19.24
+PyQt5_sip==12.11.0
 pyrsistent==0.18.1
 pytest==6.2.4
 python-dateutil==2.8.2
@@ -210,7 +210,7 @@ rsa==4.8
 scikit-learn==1.0.1
 scikit-learn-extra==0.3.0
 scikit-surprise==1.1.3
-scipy==1.7.1
+scipy==1.10.1
 selenium==4.1.0
 semver==2.13.0
 Send2Trash==1.8.0
@@ -232,8 +232,8 @@ starlette==0.26.1
 streamlit==1.13.0
 streamlit-chat==0.0.2.2
 streamlit-lottie==0.0.3
-surprise==0.1
-TBB==0.1
+scikit-surprise==1.1.3
+TBB==2021.9.0
 tenacity==8.2.2
 tensorboard==2.8.0
 tensorboard-data-server==0.6.1
