@@ -24,13 +24,13 @@ st.write("##")
 # Discard this function
 # Do not encourage personal users to share indice; enterprise users can share indice from cloud
 # st.subtitle("Transfer index database from other users")
-st.subheader("(Enterprise users can generate multiple databases and share on cloud)")
-st.write("##")
+# st.subheader("(Enterprise users can generate multiple databases and share on cloud)")
+# st.write("##")
 
-st.subheader("Delete index from your database")
-st.markdown("Although this function allows to delete an index from your index database, this is <span style='color:red'>not recommended</span>.", unsafe_allow_html=True)
-st.write("(can implement user id and password to secure 不会做~~)")
-index2delete = st.text_input("Input the index you want to delete")
+st.markdown("**Delete index from your database**")
+# st.markdown("Although this function allows to delete an index from your index database, this is <span style='color:red'>not recommended</span>.", unsafe_allow_html=True)
+# st.write("(can implement user id and password to secure 不会做~~)")
+index2delete = st.text_input("Enter index to delete (e.g., idx_notes1)")
 if len(index2delete) > 0:
     if index2delete not in record_self.Index.values:
         st.error(f"Index {index2delete} does not exist")

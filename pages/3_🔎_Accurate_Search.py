@@ -41,7 +41,7 @@ def get_answer_docs(query, index_path, k):
     return answer, similar_docs
 
 
-st.header("Accurate Search")
+#st.header("Accurate Search")
 st.subheader("Accurate search in selected index")
 
 record_self = load_database_self()
@@ -55,9 +55,10 @@ if selected_index is not None:
         st.error("Please validate your API key at Homepage")
     else:        
         query = st.text_input("Input your query")
-        st.write("- The default number of related documents to retrieve (k number) is 4 or 1, depending on vector counts in the index")
+        st.write("**k number** is the number of related documents to retrieve")
+        st.write("- The default k number is 4 or 1, depending on your document length and number")
         st.write("- Or you can:")
-        define_k = st.checkbox("Set your desired k number (limited by vector counts)")
+        define_k = st.checkbox("Set your desired k number")
         
         n_vectors = record_self.loc[record_self.Index==selected_index, "vector counts"].squeeze()
         valid_k = False
@@ -70,9 +71,9 @@ if selected_index is not None:
         else:
             input_k = st.text_input("Set k number:")
             if not input_k.isdigit():
-                st.error(f"Please input an integer no higher than {n_vectors}")
+                st.error(f"Please input an integer no higher than: **{n_vectors}**")
             elif int(input_k) > n_vectors:
-                st.error(f"Please input an integer no higher than {n_vectors}")
+                st.error(f"Please input an integer no higher than: **{n_vectors}**")
             else:
                 k = int(input_k)
                 valid_k = True

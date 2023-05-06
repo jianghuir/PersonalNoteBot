@@ -66,28 +66,26 @@ def create_index_from_folder(folder_path, index_name, API_key):
 
 
 with st.container():
-    st.write("##")
-    st.write("##")
-    st.subheader("Select a folder of files for indexing")
+    st.subheader("Create your database")
 
-    left_column, image_column1 = st.columns((4,1))
+    left_column, image_column = st.columns((4,1))
     
 
     with left_column:
         valid_folder, valid_index, replace_index, index_folder = False, False, False, False
-        st.write("**All eligible files in the folder and its subfolders are indexed and saved in Index Database**")
-        folder_path = st.text_input("Folder Directory (please input an absolute path)")
+        # st.write("**All eligible files in the folder and its subfolders are indexed and saved in Index Database**")
+        folder_path = st.text_input("Enter folder path (e.g., /Users/john/Documents/notes1)")
         if folder_path: # check if the folder directory is valid            
             if len(folder_path) == 0:
                 valid_folder = False
                 st.write("You need to provide the absolute path of your folder for indexing")
             elif not os.path.isdir(folder_path):
                 valid_folder = False
-                st.error("The folder directory is invalid")
+                st.error("The folder path is invalid")
             else:
                 valid_folder = True
 
-        index_name = st.text_input("Index name: Please name your index, e.g., idx_notes1")
+        index_name = st.text_input("Name your database (e.g., notes1)")
         
         if index_name: # check if database name is pre-existing
             if len(index_name) == 0:
@@ -106,7 +104,7 @@ with st.container():
             if replace_index:
                 valid_index = True
 
-        index_folder = st.button("📋 Index documents")
+        index_folder = st.button("📋 Submit", key="create_index")
         
         if index_folder:
             if not st.session_state["API_key_valid"]:
@@ -121,8 +119,18 @@ with st.container():
                     st.spinner("") # clear spinner
 
 
-    with image_column1:
+    with image_column:
         st.image(img_folder)
+    
+
+st.write("##")
+
+st.write("**Supported Document Types:**")
+st.markdown(".py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.ipynb")
+st.write(".docx        .xlsx         .pptx")
+st.write(".ods         .odt")
+st.write(".txt         .pdf          .html")
+
 
 
 

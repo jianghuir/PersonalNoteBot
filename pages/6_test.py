@@ -99,3 +99,9 @@ def generate_answer():
     return
 st.text_input("enter something", key="input_text", on_change=generate_answer)
 st.write(st.session_state.input_text) # must pass values through session_state for other operation
+
+
+link = 'https://www.streamlit.io/'
+button_text = 'Go to Streamlit website'
+button = f'<a href="{link}" target="_blank">{button_text}</a>'
+st.markdown(button, unsafe_allow_html=True)

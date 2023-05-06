@@ -100,34 +100,13 @@ def init_chatbot(selected_index):
 
     return chatbot
 
-def get_response(query):
-    """
-    This function generates response through chatbot
-    """
-    instruction = "AI must use retrievalQA tool first. If cannot find answer in retrievalQA tool, \
-AI's output must start with 'The question is not in the scope of the documents provided.', and then \
-AI can answer the question based on chat history or parametric knowledge. Question: "
-
-    if st.session_state["index"] == no_idx:
-        response = st.session_state["chatbot"](query)
-    else:
-        full_query = instruction + query
-        response = st.session_state["chatbot"](full_query)
-    # Store the user input and response
-    st.session_state.query_history.append(query)
-    if st.session_state["index"] == no_idx:
-        st.session_state.response_history.append(response["response"])
-    else:
-        st.session_state.response_history.append(response["output"])
-
-    return
 
 with st.container():
     image_column, right_column = st.columns((1,2))
     with image_column:
         st.image(img_bot)
     with right_column:
-        st.header("Your Personal Chatbot ")
+        st.subheader("Your Personal Chatbot ")
         st.write("Your personal AI chatbot will initially attempt to answer your question using the \
 knowledge contained within your document index. If the question exceeds the scope of the documents, the \
 chatbot will then endeavor to answer based on its own knowledge.")
@@ -166,7 +145,21 @@ else:
 
         if query:
             with st.spinner("🤖 generating answer..."):
-                get_response(query)
+                instruction = "AI must use retrievalQA tool first. If cannot find answer in retrievalQA tool, \
+AI's output must start with 'The question is not in the scope of the documents provided.', and then \
+AI can answer the question based on chat history or parametric knowledge. Question: "
+
+                if st.session_state["index"] == no_idx:
+                    response = st.session_state["chatbot"](query)
+                else:
+                    full_query = instruction + query
+                    response = st.session_state["chatbot"](full_query)
+                # Store the user input and response
+                st.session_state.query_history.append(query)
+                if st.session_state["index"] == no_idx:
+                    st.session_state.response_history.append(response["response"])
+                else:
+                    st.session_state.response_history.append(response["output"])
                 st.spinner("")
             
 
