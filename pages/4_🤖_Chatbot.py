@@ -115,8 +115,8 @@ chatbot will then endeavor to answer based on its own knowledge.")
 options = list(record_self.Index.values)
 options += [no_idx]
 current_option = options.index(st.session_state["index"])
-st.markdown("Select an index")
-selected_index = st.selectbox("Select an index for Chatbot 🤖", options, label_visibility="collapsed")
+st.markdown("Select a database")
+selected_index = st.selectbox("Select an index for Chatbot", options, label_visibility="collapsed")
 
 initiate_chatbot = st.button("Initiate Chatbot 🤖")
 
@@ -131,13 +131,13 @@ else:
     
     if st.session_state["chatbot"]:
         if st.session_state["index"] == no_idx:
-            st.success("The Chatbot 🤖 is ready to help you! (no index loaded)")
+            st.success("The Chatbot 🤖 is ready to answer your questions! (no database loaded)")
         else:
-            st.success(f"The Chatbot 🤖 loaded with **- {st.session_state['index']} -** is ready to help you!")       
+            st.success(f"The Chatbot 🤖 loaded with **- {st.session_state['index']} -** is ready to answer your questions!")       
 
         # we need to use st.form to clear query after submission
         with st.form(key='my_form',clear_on_submit=True):
-            st.text_input('Enter your query', value="", key='text_value')
+            st.text_input('Enter your question', value="", key='text_value')
             submit = st.form_submit_button(label='Submit', on_click=update)
 
         query = st.session_state.query_text            
@@ -151,9 +151,11 @@ AI can answer the question based on chat history or parametric knowledge. Questi
 
                 if st.session_state["index"] == no_idx:
                     response = st.session_state["chatbot"](query)
+                    #st.write(response)
                 else:
                     full_query = instruction + query
                     response = st.session_state["chatbot"](full_query)
+                    #st.write(response)
                 # Store the user input and response
                 st.session_state.query_history.append(query)
                 if st.session_state["index"] == no_idx:

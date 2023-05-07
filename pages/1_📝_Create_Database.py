@@ -30,6 +30,7 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
 img_folder = Image.open("images/folder.png")
+img_types = Image.open("images/eligible_types3.png")
 
 def create_index_from_folder(folder_path, index_name, API_key):
     """
@@ -55,7 +56,7 @@ def create_index_from_folder(folder_path, index_name, API_key):
     index_path = os.path.join(os.getcwd(), db_folder, index_name)
     Chroma.from_documents(documents=split_documents, embedding=embeddings, persist_directory=index_path)
 
-    st.success(f"Eligible files in folder {folder_path} are successfully indexed and saved in index database")
+    st.success(f"Eligible files in folder {folder_path} are successfully indexed and saved in the database")
 
     # update database_record_self.csv
     update_database_record(index_name, original_docs, num_vectors)
@@ -66,7 +67,7 @@ def create_index_from_folder(folder_path, index_name, API_key):
 
 
 with st.container():
-    st.subheader("Create your database")
+    st.subheader("Convert your documents into database")
 
     left_column, image_column = st.columns((4,1))
     
@@ -85,7 +86,7 @@ with st.container():
             else:
                 valid_folder = True
 
-        index_name = st.text_input("Name your database (e.g., notes1)")
+        index_name = st.text_input("Name your database (e.g., idx_notes1)")
         
         if index_name: # check if database name is pre-existing
             if len(index_name) == 0:
@@ -126,10 +127,7 @@ with st.container():
 st.write("##")
 
 st.write("**Supported Document Types:**")
-st.markdown(".py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.ipynb")
-st.write(".docx        .xlsx         .pptx")
-st.write(".ods         .odt")
-st.write(".txt         .pdf          .html")
+st.image(img_types)
 
 
 

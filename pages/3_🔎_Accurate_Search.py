@@ -42,11 +42,11 @@ def get_answer_docs(query, index_path, k):
 
 
 #st.header("Accurate Search")
-st.subheader("Accurate search in selected index")
+st.subheader("Accurate search in selected database")
 
 record_self = load_database_self()
 options = list(record_self.Index.values)
-st.markdown("Select an index")
+st.markdown("Select a database")
 selected_index = st.selectbox("Select an index", options, label_visibility="collapsed")
 
 if selected_index is not None:  
@@ -55,35 +55,22 @@ if selected_index is not None:
         st.error("Please validate your API key at Homepage")
     else:        
         query = st.text_input("Input your query")
-        st.write("**k number** is the number of related documents to retrieve")
-        st.write("- The default k number is 4 or 1, depending on your document length and number")
-        st.write("- Or you can:")
-        define_k = st.checkbox("Set your desired k number")
         
         n_vectors = record_self.loc[record_self.Index==selected_index, "vector counts"].squeeze()
-        valid_k = False
-        if not define_k :
-            if n_vectors > 6:
-                k = 4
-            else:
-                k = 1
-            valid_k = True
+        if n_vectors > 30:
+            k = 10
+        elif n_vectors > 3:
+            k = n_vectors // 3
         else:
-            input_k = st.text_input("Set k number:")
-            if not input_k.isdigit():
-                st.error(f"Please input an integer no higher than: **{n_vectors}**")
-            elif int(input_k) > n_vectors:
-                st.error(f"Please input an integer no higher than: **{n_vectors}**")
-            else:
-                k = int(input_k)
-                valid_k = True
+            k = 1
+        
 
         submit_query = st.button("Submit query")
         st.write("---")
 
         if ((len(query) == 0) & submit_query):
             st.error("Please give a query") 
-        elif (valid_k & submit_query):
+        elif submit_query:
             with st.spinner("......"):
                 st.session_state["query"] = query
                 st.session_state["k"] = k
@@ -95,7 +82,7 @@ if selected_index is not None:
                 
                 st.spinner("") # clear spinner
 
-not_found = ["not found", "don't know", "do not know", "not find", "n't find", "not be found", "n't be found"]
+not_found = ["don't know", "do not know", "not found", "not find", "n't find", "not be found", "n't be found"]
 if len(st.session_state["answer"])>0:
     st.write("**Query**:", st.session_state["query"])
     st.write("**Answer**:", st.session_state["answer"])
@@ -106,13 +93,32 @@ if len(st.session_state["answer"])>0:
     else:
         explain_score = "(a lower **distance score** indicates a higher level of relevance)"
         if st.session_state['k'] == 1:
-            st.write(f"**Top {st.session_state['k']} related document:** {explain_score}")
+            st.write(f"**Top related document:** {explain_score}")
         else:
-            st.write(f"**Top {st.session_state['k']} related documents:** {explain_score}")
+            st.write(f"**Top related documents:** {explain_score}")
 
-        for i in range(st.session_state['k']):
-            st.markdown(f"-- **#{i+1}** --")
-            st.markdown(f"**Document Location**: {st.session_state['similar_docs'][i][0].metadata}")
-            st.markdown(f"**Distance Score**: {st.session_state['similar_docs'][i][1]:.3f}")
-            if st.checkbox("Display document content", key=f"display_{i}"):
-                st.markdown(st.session_state['similar_docs'][i][0].page_content)
+        if st.session_state['k'] <= 4:
+            for i in range(st.session_state['k']):
+                st.markdown(f"-- **#{i+1}** --")
+                st.markdown(f"**Document Location**: {st.session_state['similar_docs'][i][0].metadata}")
+                st.markdown(f"**Distance Score**: {st.session_state['similar_docs'][i][1]:.3f}")
+                if st.checkbox("Display document content", key=f"display_{i}"):
+                    st.markdown(st.session_state['similar_docs'][i][0].page_content)        
+        else:
+            # show first 4 results
+            for i in range(4):
+                st.markdown(f"-- **#{i+1}** --")
+                st.markdown(f"**Document Location**: {st.session_state['similar_docs'][i][0].metadata}")
+                st.markdown(f"**Distance Score**: {st.session_state['similar_docs'][i][1]:.3f}")
+                if st.checkbox("Display document content", key=f"display_{i}"):
+                    st.markdown(st.session_state['similar_docs'][i][0].page_content)
+            # show more results if "View more" is checked
+            st.write("##")
+            view_more = st.checkbox("View more related documents")
+            if view_more:
+                for i in range(4, st.session_state['k']):
+                    st.markdown(f"-- **#{i+1}** --")
+                    st.markdown(f"**Document Location**: {st.session_state['similar_docs'][i][0].metadata}")
+                    st.markdown(f"**Distance Score**: {st.session_state['similar_docs'][i][1]:.3f}")
+                    if st.checkbox("Display document content", key=f"display_{i}"):
+                        st.markdown(st.session_state['similar_docs'][i][0].page_content)

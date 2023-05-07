@@ -67,8 +67,8 @@ with st.container():
         st_lottie(lottie_chatbot, height=300)
 
 
-with st.container():
-    st.write("##")
-    st.write("##")
-    st.write("##")
-    st.image(eligible_img)
+# with st.container():
+#     st.write("##")
+#     st.write("##")
+#     st.write("##")
+#     st.image(eligible_img)

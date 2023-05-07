@@ -17,8 +17,9 @@ pd.set_option('display.max_colwidth', None)
 
 
 record_self = load_database_self()
-st.subheader("Index Database:")
-table = st.table(record_self)
+record_self_ = record_self.drop("vector counts", axis=1)
+st.subheader("Database:")
+table = st.table(record_self_)
 st.write("##")
 
 # Discard this function
@@ -27,10 +28,10 @@ st.write("##")
 # st.subheader("(Enterprise users can generate multiple databases and share on cloud)")
 # st.write("##")
 
-st.markdown("**Delete index from your database**")
+st.markdown("**Delete obsolete database**")
 # st.markdown("Although this function allows to delete an index from your index database, this is <span style='color:red'>not recommended</span>.", unsafe_allow_html=True)
-# st.write("(can implement user id and password to secure 不会做~~)")
-index2delete = st.text_input("Enter index to delete (e.g., idx_notes1)")
+# st.write("(can implement user id and password to secure)")
+index2delete = st.text_input("Enter database to delete (e.g., idx_notes1)")
 if len(index2delete) > 0:
     if index2delete not in record_self.Index.values:
         st.error(f"Index {index2delete} does not exist")

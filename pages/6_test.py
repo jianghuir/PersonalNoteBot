@@ -105,3 +105,4 @@ link = 'https://www.streamlit.io/'
 button_text = 'Go to Streamlit website'
 button = f'<a href="{link}" target="_blank">{button_text}</a>'
 st.markdown(button, unsafe_allow_html=True)
+
