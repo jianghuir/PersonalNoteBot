@@ -103,9 +103,9 @@ expander = st.expander("🔍 Accurate Search")
 
 with expander:
     # st.header("🔍 Accurate Search")
-    st.write("When opting for the accurate search feature, InfoHunter scans your documents and compares your query to the most relevant documents, providing a precise match for your search request.")
-    st.write("InfoHunter can provide up to 10 documents that match your query, ranking them in order of similarity, from the most closely related to the least similar.")
-    st.write("Additionally, InfoHunter supplies the precise location of each document, ensuring a convenient and seamless user experience.")
+    st.write("When opting for the accurate search feature, InfoHunter scans your documents and compares your query to the most relevant documents, providing a close match for your search request.")
+    st.write("InfoHunter can provide up to 10 most relevant document sections to your query, ranking them in order of similarity.")
+    st.write("Additionally, InfoHunter supplies the precise location of each document section, ensuring a convenient and seamless user experience.")
 
 
 # Chatbot section
@@ -113,5 +113,5 @@ expander = st.expander("🤖 Chatbot")
 
 with expander:
     # st.header("🤖 Chatbot")
-    st.write("Using the chatbot feature, you can engage in conversation with your documents through the advanced language capabilities of ChatGPT 3.5.")
+    st.write("Using the chatbot feature, you can engage in conversation with your documents through the advanced language capabilities of GPT 3.5.")
     st.write("The chatbot feature also includes a memory function that retains the history of your prior interactions with the chatbot for a more coherent and contextual conversation.")
