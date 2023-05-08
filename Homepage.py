@@ -55,7 +55,7 @@ with st.container():
         st.markdown(key_button, unsafe_allow_html=True)
         API_key = st.text_input("Your OpenAI key:", st.session_state["API_key"], type="password")
         st.session_state["API_key"] = API_key
-        validate_key = st.button("Validate API Key")
+        validate_key = st.button("Validate Key")
         if validate_key:
             if authenticate(API_key):
                 st.success("Authentication successful")

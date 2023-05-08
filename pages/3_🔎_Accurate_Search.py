@@ -52,7 +52,7 @@ selected_index = st.selectbox("Select an index", options, label_visibility="coll
 if selected_index is not None:  
     index_path = os.path.join(os.getcwd(), db_folder, selected_index)
     if not st.session_state["API_key_valid"]:
-        st.error("Please validate your API key at Homepage")
+        st.error("Please validate your OpenAI key at Homepage")
     else:        
         query = st.text_input("Input your query")
         
@@ -114,7 +114,7 @@ if len(st.session_state["answer"])>0:
                     st.markdown(st.session_state['similar_docs'][i][0].page_content)
             # show more results if "View more" is checked
             st.write("##")
-            view_more = st.checkbox("View more related documents")
+            view_more = st.checkbox("View more")
             if view_more:
                 for i in range(4, st.session_state['k']):
                     st.markdown(f"-- **#{i+1}** --")

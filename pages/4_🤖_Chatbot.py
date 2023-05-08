@@ -122,7 +122,7 @@ initiate_chatbot = st.button("Initiate Chatbot 🤖")
 
 # make the language model for chatbot
 if not st.session_state["API_key_valid"]:
-    st.error("Please validate your API key at Homepage.")
+    st.error("Please validate your OpenAI key at Homepage.")
 else:
     if initiate_chatbot:        
         st.session_state["chatbot"] = init_chatbot(selected_index) #update chatbot
