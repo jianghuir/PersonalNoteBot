@@ -18,7 +18,7 @@ pd.set_option('display.max_colwidth', None)
 
 record_self = load_database_self()
 record_self_ = record_self.drop("vector counts", axis=1)
-st.subheader("Database:")
+st.subheader("Database")
 table = st.table(record_self_)
 st.write("##")
 

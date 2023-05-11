@@ -9,3 +9,7 @@ practice*
 .*  
 !/.gitignore  
 *.csv
+
+*/__pycache__/
+Index_Database_self
+.DS_Store

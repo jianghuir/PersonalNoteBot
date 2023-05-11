@@ -10,7 +10,8 @@ st.set_page_config(
 
 st.sidebar.success("Select a page above")
 
-folder2database_img = Image.open("images/folder2database.png")
+folder2database_img = Image.open("images/folder2database2.png")
+
 def local_css(file_name):
     """
     This function defines the format of st.write and st.markdown
@@ -49,7 +50,7 @@ with expander:
         st.write("To use InfoHunter, follow these simple steps: 👍🏼")
         st.write("1. Create an OpenAI API key")
         st.write("2. Enter your document folder path")
-        st.write("3. Assign a database name for your document folder")
+        st.write("3. Name a database to hold your document embeddings")
         st.write("4. Select Accurate Search/Chatbot")
         st.write("5. Enter your queries")
     with image_column:

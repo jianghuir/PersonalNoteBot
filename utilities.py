@@ -9,6 +9,7 @@ from langchain.document_loaders import UnstructuredWordDocumentLoader
 from langchain.document_loaders import UnstructuredHTMLLoader
 from langchain.document_loaders import TextLoader
 from langchain.docstore.document import Document
+import streamlit as st
 
 
 record_path = os.path.join(os.getcwd(),"database_record_self.csv")
@@ -84,7 +85,7 @@ def read_file(file_path):
     content, content_sheets, data, pages, doc = None, None, None, None, None
     
     file_extension = os.path.splitext(file_path)[1]
-    
+    st.write("8")
     if file_extension in {'.txt', '.pdf', '.odt', '.ods', '.docx', '.xlsx', '.ipynb', '.py', '.pptx', '.html'}:
 
         # Read the file based on its extension
@@ -115,10 +116,12 @@ def read_file(file_path):
             content = stdout.decode('utf-8') # a string
 
         elif file_extension == '.ipynb':
+            #st.write("9")
             with open(file_path, 'r', encoding='utf-8') as f:
                 notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
-            exporter = PythonExporter()
-            content, _ = exporter.from_notebook_node(notebook) # content is a string            
+                #st.write("10")
+            exporter = PythonExporter()            
+            content, _ = exporter.from_notebook_node(notebook) # content is a string          
 
         elif file_extension in ('.ods', '.xlsx'):
             excel_file = pd.ExcelFile(file_path)
@@ -134,17 +137,18 @@ def read_file(file_path):
 
         # save the file as a Document object
         if data:
-            #st.write(file_path, "has data.")
+            st.write(file_path, "has data.")
             return data, [file_path]
 
         elif pages:
-            #st.write(file_path, "has pages.")
+            st.write(file_path, "has pages.")
             return pages, [file_path]
 
         elif content:
             #st.write(file_path, "has content.")
             content = content.replace("  ","")
             doc = Document(page_content=content, metadata={"source": file_path})
+            #st.write("1")
             return [doc], [file_path]
 
         elif content_sheets:
@@ -178,13 +182,30 @@ def folder_recursion(folder_path):
     original_docs = []
     # Loop through files in the folder
     for file_name in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, file_name)        
-        if os.path.isdir(file_path): # file_path is a folder
-            documents += folder_recursion(file_path)[0]
-            original_docs += folder_recursion(file_path)[1]
-        else: # file_path is a single file
-            documents += read_file(file_path)[0]
-            original_docs += read_file(file_path)[1]
+        file_path = os.path.join(folder_path, file_name)
+        if file_name.startswith((".", "~")):# ignore hidden files and temp files
+            #st.write(f"ignore {file_name}")
+            pass
+        else:
+            #st.write(file_path)
+            try:
+                if os.path.isdir(file_path): # file_path is a folder
+                    #st.write("6")
+                    results = folder_recursion(file_path)
+                    documents += results[0]
+                    original_docs += results[1]
+                    #st.write("2")
+                else: # file_path is a single file
+                    #st.write("7")
+                    results = read_file(file_path)
+                    documents += results[0]
+                    original_docs += results[1]
+                    #st.write("3")
+        
+            except Exception as e:
+                st.error(e)
+                if isinstance(e, IndentationError):
+                    st.error(f"To locate the indentation error: Please search the phrase **'{e.args[1][-1]}'** in {file_path}. Click 'Submit' again after you fix the indentation or remove the errored file.")
     
     return documents, original_docs   
 

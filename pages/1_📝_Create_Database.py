@@ -39,27 +39,28 @@ def create_index_from_folder(folder_path, index_name, API_key):
     index_name: database name defined by user
     """ 
     documents, original_docs = folder_recursion(folder_path)
-    #st.write(f"Read in {len(documents)} documents (and pages/sheets) from directory {folder_path}")
+    st.write(f"Read in {len(documents)} documents (and pages/sheets) from directory {folder_path}")
 
-    # split each document into a good size
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-    split_documents = text_splitter.split_documents(documents)
-    num_vectors = len(split_documents)
+    if len(documents) > 0:
+        # split each document into a good size
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+        split_documents = text_splitter.split_documents(documents)
+        num_vectors = len(split_documents)
 
-    embeddings = OpenAIEmbeddings(openai_api_key=API_key)
+        embeddings = OpenAIEmbeddings(openai_api_key=API_key)
 
-    # attention: we need persist_directory to save our embeddings for later use
-    # OpenAI charges on embedding and run(query)
-    # a folder named index_name is created inside cwd
-    
-    
-    index_path = os.path.join(os.getcwd(), db_folder, index_name)
-    Chroma.from_documents(documents=split_documents, embedding=embeddings, persist_directory=index_path)
+        # attention: we need persist_directory to save our embeddings for later use
+        # OpenAI charges on embedding and run(query)
+        # a folder named index_name is created inside cwd
+        
+        
+        index_path = os.path.join(os.getcwd(), db_folder, index_name)
+        Chroma.from_documents(documents=split_documents, embedding=embeddings, persist_directory=index_path)
 
-    st.success(f"Eligible files in folder {folder_path} are successfully indexed and saved in the database")
+        st.success(f"Eligible files in folder {folder_path} are successfully indexed and saved in the database")
 
-    # update database_record_self.csv
-    update_database_record(index_name, original_docs, num_vectors)
+        # update database_record_self.csv
+        update_database_record(index_name, original_docs, num_vectors)
 
     return
 

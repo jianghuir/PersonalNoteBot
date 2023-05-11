@@ -89,7 +89,7 @@ if len(st.session_state["answer"])>0:
     st.write("##")
 
     if any(_ in st.session_state["answer"] for _ in not_found):
-        st.write("The query is out of the scope of the documents in your selected index")
+        st.write(f"The query is out of the scope of the documents in your selected database")
     else:
         explain_score = "(a lower **distance score** indicates a higher level of relevance)"
         if st.session_state['k'] == 1:

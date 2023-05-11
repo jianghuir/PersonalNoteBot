@@ -18,7 +18,7 @@ st.set_page_config(
 
 img_bot = Image.open("images/bot2.png")
 st.sidebar.success("Select a page above")
-no_idx = "Do not use any index"
+no_idx = "Do not use any database"
 
 if "API_key" not in st.session_state:
     st.session_state["API_key"] = ""
@@ -108,7 +108,7 @@ with st.container():
     with right_column:
         st.subheader("Your Personal Chatbot ")
         st.write("Your personal AI chatbot will initially attempt to answer your question using the \
-knowledge contained within your document index. If the question exceeds the scope of the documents, the \
+knowledge contained within your document database. If the question exceeds the scope of the documents, the \
 chatbot will then endeavor to answer based on its own knowledge.")
 
 
